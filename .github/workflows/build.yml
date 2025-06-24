@@ -9,17 +9,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up PlatformIO
-        uses: platformio/github-actions@v3
-        with:
-          platformio_version: latest
-      - name: Build firmware.bin
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install PlatformIO
+        run: |
+          pip install -U platformio
+
+      - name: Build firmware
         run: |
           pio run -e esp32s3
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+
+      - name: Upload firmware.bin
+        uses: actions/upload-artifact@v4
         with:
           name: firmware
           path: .pio/build/esp32s3/firmware.bin
